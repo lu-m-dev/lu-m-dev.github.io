@@ -148,8 +148,9 @@ export default function Projects() {
               style={{ color: 'inherit', textDecoration: 'underline' }}
               aria-label={`Open ${username}'s GitHub repositories`}
             >
-              Repositories for <strong>{username}</strong>
+              <strong>lu-m-dev</strong> Public Repositories.
             </a>
+            <i>(Note: Confidential research projects are now shown.)</i>
           </p>
 
           {loading && <div>Loading repositories…</div>}
