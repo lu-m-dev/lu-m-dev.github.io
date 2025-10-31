@@ -150,7 +150,7 @@ export default function Projects() {
             >
               <strong>lu-m-dev</strong> Public Repositories.
             </a>
-            <i>(Note: Confidential research projects are now shown.)</i>
+            <i> (Note: Confidential research projects are not shown.)</i>
           </p>
 
           {loading && <div>Loading repositories…</div>}
