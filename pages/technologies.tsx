@@ -1,96 +1,20 @@
 import { useState } from 'react'
+import { type Tech, categories } from '../src/TechData'
 
-type Tech = { name: string; slug: string }
-type Category = { title: string; className?: string; items: Tech[] }
-
-const categories: Category[] = [
-  {
-    title: 'Web Dev',
-    className: 'field-web',
-    items: [
-      { name: 'HTML5', slug: 'html5' },
-      { name: 'CSS', slug: 'css' },
-      { name: 'JavaScript', slug: 'javascript' },
-      { name: 'TypeScript', slug: 'typescript' },
-      { name: 'React', slug: 'react' },
-      { name: 'Next.js', slug: 'nextdotjs' },
-      { name: 'Node.js', slug: 'nodedotjs' },
-      { name: 'Git', slug: 'git' },
-      { name: 'GitHub', slug: 'github' },
-    ],
-  },
-  {
-    title: 'Data Science',
-    className: 'field-ml',
-    items: [
-      { name: 'Python', slug: 'python' },
-      { name: 'Pandas', slug: 'pandas' },
-      { name: 'NumPy', slug: 'numpy' },
-      { name: 'scikit-learn', slug: 'scikitlearn' },
-      { name: 'TensorFlow', slug: 'tensorflow' },
-      { name: 'PyTorch', slug: 'pytorch' },
-      { name: 'SciPy', slug: 'scipy' },
-      { name: 'R', slug: 'r' },
-    ],
-  },
-  {
-    title: 'Engineering',
-    className: 'field-engineering',
-    items: [
-      { name: 'MATLAB', slug: 'MATLAB' },
-      { name: 'SOLIDWORKS', slug: 'SW' },
-      { name: 'AutoCAD', slug: 'autocad' },
-      { name: 'Dassault Systèmes', slug: 'dassaultsystemes' },
-      { name: 'Arduino', slug: 'arduino' },
-      { name: 'COMSOL', slug: 'comsol' },
-      { name: 'ROS', slug: 'ros' },
-      { name: 'Espressif', slug: 'espressif' },
-      { name: 'ESPHome', slug: 'esphome' },
-      { name: 'Raspberry Pi', slug: 'raspberrypi' },
-    ]
-  },
-  {
-    title: 'Scientific Simulation and Graphics',
-    className: 'field-graphics',
-    items: [
-      { name: 'GNU', slug: 'gnu' },
-      { name: 'Octave', slug: 'octave' },
-      { name: 'CUDA', slug: 'CUDA' },
-      { name: 'OpenGL', slug: 'opengl' },
-      { name: 'Vulkan', slug: 'vulkan' },
-      { name: 'WebGL', slug: 'webgl' },
-      { name: 'WebGPU', slug: 'webgpu' },
-    ]
-  },
-  {
-    title: 'Other',
-    className: 'field-general',
-    items: [
-      { name: 'C', slug: 'c' },
-      { name: 'C++', slug: 'cplusplus' },
-      { name: 'Java', slug: 'Java' },
-      { name: 'OCaml', slug: 'ocaml' },
-      { name: 'Rust', slug: 'rust' },
-    ]
-  }
-]
-
-export default function Skills() {
+export default function TechnologiesPage() {
   return (
     <div style={{ minHeight: '100vh', padding: 36 }}>
       <div className="content-wrap">
         {categories.map((cat) => (
-          <div key={cat.title}>
-            <section>
-              <h3 style={{ marginTop: 18 }}>{cat.title}</h3>
-              <div className={`logo-grid ${cat.className ?? ''}`} style={{ marginTop: 12 }}>
-                {cat.items.map((t) => (
-                  <TechItem key={t.slug} tech={t} />
-                ))}
-              </div>
-            </section>
+          <section key={cat.title}>
+            <h3 style={{ marginTop: 18 }}>{cat.title}</h3>
+            <div className={`logo-grid ${cat.className ?? ''}`} style={{ marginTop: 12 }}>
+              {cat.items.map((t) => (
+                <TechItem key={t.slug} tech={t} />
+              ))}
+            </div>
             <div className="category-break" />
-          </div>
+          </section>
         ))}
       </div>
     </div>
@@ -99,11 +23,31 @@ export default function Skills() {
 
 function TechItem({ tech }: { tech: Tech }) {
   const [showImage, setShowImage] = useState<boolean>(Boolean(tech.slug))
+  const [bubbleBelow, setBubbleBelow] = useState<boolean>(false)
 
   const logoUrl = tech.slug ? `https://cdn.simpleicons.org/${tech.slug}` : ''
+  const info = { url: tech.url ?? '#', desc: tech.desc ?? '' }
+
+  const updateBubblePosition = (el: HTMLElement | null) => {
+    if (!el) return
+    const rect = el.getBoundingClientRect()
+    const threshold = 120
+    setBubbleBelow(rect.top < threshold)
+  }
 
   return (
-    <div className="tech-item" tabIndex={0}>
+    <a
+      className="tech-item"
+      href={info.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      tabIndex={0}
+      aria-label={`${tech.name}: ${info.desc}`}
+      onMouseEnter={(e) => updateBubblePosition(e.currentTarget as HTMLElement)}
+      onFocus={(e) => updateBubblePosition(e.currentTarget as HTMLElement)}
+      onMouseLeave={() => setBubbleBelow(false)}
+      onBlur={() => setBubbleBelow(false)}
+    >
       <div className="logo">
         {showImage && logoUrl ? (
           <img
@@ -118,7 +62,10 @@ function TechItem({ tech }: { tech: Tech }) {
           </div>
         )}
       </div>
-      <div className="tech-label">{tech.name}</div>
-    </div>
+      <div className={`tech-label ${bubbleBelow ? 'bubble-bottom' : ''}`}>
+        <div className="bubble-name">{tech.name}</div>
+        {info.desc ? <div className="bubble-desc">{info.desc}</div> : null}
+      </div>
+    </a>
   )
 }
