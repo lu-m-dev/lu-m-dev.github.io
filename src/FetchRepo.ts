@@ -8,6 +8,7 @@ export type Repo = {
   previewUrl?: string | null
   has_pages?: boolean
   homepage?: string | null
+  topics?: string[]
 }
 
 async function fetchJsonOrThrow(url: string, init?: RequestInit) {

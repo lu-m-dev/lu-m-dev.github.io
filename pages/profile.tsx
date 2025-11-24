@@ -3,11 +3,10 @@ export default function About() {
     <div className="profile-page">
       <div className="profile-layout">
         <aside className="profile-left" aria-label="Profile sidebar">
-          <div
-            className="portrait"
-            style={{ backgroundImage: `url('https://via.placeholder.com/640x640?text=Portrait')` }}
-            role="img"
-            aria-label="Portrait placeholder"
+          <img
+            className="portrait portrait-img"
+            src="https://via.placeholder.com/640x640?text=Portrait"
+            alt="Portrait placeholder"
           />
 
           <div className="info-list" aria-hidden={false}>
@@ -50,7 +49,7 @@ export default function About() {
         </aside>
 
         <main className="profile-right">
-          <section className="card" style={{ marginTop: 18 }}>
+          <section className="card card--spaced">
             <p>
               I study bioengineering and scientific computing at the University of Pennsylvania.
             </p>

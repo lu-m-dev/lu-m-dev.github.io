@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import { type Tech, categories } from '../src/TechData'
 
-export default function TechnologiesPage() {
+export default function TechPage() {
   return (
-    <div style={{ minHeight: '100vh', padding: 36 }}>
+    <div className="page-container">
       <div className="content-wrap">
         {categories.map((cat) => (
           <section key={cat.title}>
-            <h3 style={{ marginTop: 18 }}>{cat.title}</h3>
-            <div className={`logo-grid ${cat.className ?? ''}`} style={{ marginTop: 12 }}>
+            <h3 className="mt-18">{cat.title}</h3>
+            <div className={`logo-grid ${cat.className ?? ''} mt-12`}>
               {cat.items.map((t) => (
                 <TechItem key={t.slug} tech={t} />
               ))}
@@ -54,7 +54,6 @@ function TechItem({ tech }: { tech: Tech }) {
             src={logoUrl}
             alt={`${tech.name} logo`}
             onError={() => setShowImage(false)}
-            style={{ width: '56px', height: '56px', objectFit: 'contain' }}
           />
         ) : (
           <div className="logo-fallback" aria-hidden={false}>

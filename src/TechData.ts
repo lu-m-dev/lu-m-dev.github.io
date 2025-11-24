@@ -3,7 +3,7 @@ export type Category = { title: string; className?: string; items: Tech[] }
 
 export const categories: Category[] = [
   {
-    title: 'Web Dev',
+    title: 'Web Development',
     className: 'field-web',
     items: [
       { name: 'HTML5', slug: 'html5', url: 'https://developer.mozilla.org/en-US/docs/Glossary/HTML5', desc: 'Semantic markup for the web' },
@@ -64,6 +64,16 @@ export const categories: Category[] = [
     ],
   },
   {
+    title: 'Typesetting and Documentation',
+    className: 'field-cloud',
+    items: [
+      { name: 'Markdown', slug: 'markdown', url: 'https://daringfireball.net/projects/markdown/', desc: 'Lightweight markup language' },
+      { name: 'LaTeX', slug: 'latex', url: 'https://www.latex-project.org/', desc: 'Typesetting system' },
+      { name: 'Overleaf', slug: 'overleaf', url: 'https://www.overleaf.com/', desc: 'Online LaTeX editor' },
+      { name: 'Typst', slug: 'typst', url: 'https://typst.org/', desc: 'Modern typesetting system' },
+    ],
+  },
+  {
     title: 'Other',
     className: 'field-general',
     items: [
@@ -74,10 +84,7 @@ export const categories: Category[] = [
       { name: 'Rust', slug: 'rust', url: 'https://www.rust-lang.org/', desc: 'Safe systems programming language' },
       { name: 'Linux', slug: 'linux', url: 'https://www.kernel.org/', desc: 'Open-source operating system kernel' },
       { name: 'Docker', slug: 'docker', url: 'https://www.docker.com/', desc: 'Containerization platform' },
-      { name: 'Markdown', slug: 'markdown', url: 'https://daringfireball.net/projects/markdown/', desc: 'Lightweight markup language' },
-      { name: 'LaTeX', slug: 'latex', url: 'https://www.latex-project.org/', desc: 'Typesetting system' },
-      { name: 'Overleaf', slug: 'overleaf', url: 'https://www.overleaf.com/', desc: 'Online LaTeX editor' },
-      { name: 'Typst', slug: 'typst', url: 'https://typst.org/', desc: 'Modern typesetting system' },
+      { name: 'Amazon Web Services', slug: 'AWS', url: 'https://aws.amazon.com/', desc: 'Cloud computing services' },
     ],
   },
 ]
