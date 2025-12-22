@@ -1,3 +1,5 @@
+import portrait from '../assets/portrait.png'
+
 export default function About() {
   return (
     <div className="profile-page">
@@ -5,8 +7,8 @@ export default function About() {
         <aside className="profile-left" aria-label="Profile sidebar">
           <img
             className="portrait portrait-img"
-            src="https://via.placeholder.com/640x640?text=Portrait"
-            alt="Portrait placeholder"
+            src={portrait.src}
+            alt="Portrait"
           />
 
           <div className="info-list" aria-hidden={false}>
