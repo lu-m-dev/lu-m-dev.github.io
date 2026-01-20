@@ -1,113 +1,113 @@
-import { useEffect, useState, useRef } from 'react'
-import { fetchUserRepos, type Repo } from '../src/FetchRepo'
+/**
+ * Projects page displaying GitHub repositories with category filtering.
+ */
 
-function normalizeHomepage(homepage?: string | null) {
-  const hp = homepage && homepage.trim() ? homepage.trim() : null
-  if (!hp) return null
-  return /^https?:\/\//i.test(hp) ? hp : `https://${hp}`
-}
+import { useEffect, useState, useCallback } from 'react'
+import { fetchUserRepos } from '@/lib/github'
+import { MasonryGrid, ProjectCard, FilterPanel } from '@/components'
+import { PROJECT_CATEGORIES } from '@/data'
+import type { Repo, ProjectCategory } from '@/types'
 
-function ProjectCard({ repo }: { repo: Repo }) {
-  const homepageUrl = normalizeHomepage(repo.homepage)
+const GITHUB_USERNAME = process.env.NEXT_PUBLIC_GITHUB_USERNAME || 'lu-m-dev'
+const REFRESH_INTERVAL = 5 * 60 * 1000
+const STORAGE_KEY_EXPANDED = 'projects-filter-expanded'
+const STORAGE_KEY_CATEGORIES = 'projects-filter-categories'
 
-  const openRepo = () => window.open(repo.html_url, '_blank', 'noopener')
+function useLocalStorage<T>(key: string, fallback: T): [T, (value: T) => void] {
+  const [value, setValue] = useState<T>(() => {
+    if (typeof window === 'undefined') return fallback
+    try {
+      const saved = localStorage.getItem(key)
+      return saved ? JSON.parse(saved) : fallback
+    } catch {
+      return fallback
+    }
+  })
 
-  return (
-    <div
-      className="card project-card"
-      onClick={openRepo}
-      role="link"
-      tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') openRepo()
-      }}
-    >
-      {repo.previewUrl ? (
-        <div className="preview-box">
-          <img src={repo.previewUrl} alt={`${repo.name} preview`} />
-        </div>
-      ) : (
-        <div className="preview-box preview-fallback" aria-hidden={!repo.previewUrl}>
-          <div className="preview-fallback">No preview</div>
-        </div>
-      )}
-
-      <h4>{repo.name}</h4>
-
-      <div className="project-card-body">
-        <div className="project-card-left">
-          <p>{repo.description ?? 'No description provided.'}</p>
-          {repo.topics && repo.topics.length > 0 ? (
-            <div className="topic-wrap">
-              {repo.topics.map((t) => (
-                <span key={t} className="tag-chip">
-                  {t}
-                </span>
-              ))}
-            </div>
-          ) : null}
-        </div>
-
-        {repo.has_pages && homepageUrl ? (
-          <a
-            href={homepageUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={(e) => e.stopPropagation()}
-            aria-label={`Open deployed site for ${repo.name}`}
-            className="try-live"
-          >
-            <span className="label">Try Live</span>
-          </a>
-        ) : null}
-      </div>
-    </div>
+  const setAndPersist = useCallback(
+    (newValue: T) => {
+      setValue(newValue)
+      localStorage.setItem(key, JSON.stringify(newValue))
+    },
+    [key]
   )
+
+  return [value, setAndPersist]
 }
 
 export default function Projects() {
   const [repos, setRepos] = useState<Repo[] | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [filterExpanded, setFilterExpanded] = useLocalStorage(STORAGE_KEY_EXPANDED, false)
+  const [savedCategories, setSavedCategories] = useLocalStorage<string[]>(STORAGE_KEY_CATEGORIES, [...PROJECT_CATEGORIES])
 
-  const username = process.env.NEXT_PUBLIC_GITHUB_USERNAME || 'lu-m-dev'
+  const selectedCategories = new Set(
+    savedCategories.filter((c): c is ProjectCategory => PROJECT_CATEGORIES.includes(c as ProjectCategory))
+  )
+
   useEffect(() => {
     let cancelled = false
 
-    async function load() {
+    const loadRepos = async () => {
       setLoading(true)
       setError(null)
       try {
         const token = process.env.NEXT_PUBLIC_GITHUB_TOKEN
-        const data = await fetchUserRepos(username, token)
+        const data = await fetchUserRepos(GITHUB_USERNAME, token)
         if (!cancelled) setRepos(data)
-      } catch (err: any) {
-        if (!cancelled) setError(err.message ?? String(err))
+      } catch (err) {
+        if (!cancelled) setError(err instanceof Error ? err.message : String(err))
       } finally {
         if (!cancelled) setLoading(false)
       }
     }
 
-    load()
-    const interval = setInterval(load, 1000 * 60 * 5)
+    loadRepos()
+    const intervalId = setInterval(loadRepos, REFRESH_INTERVAL)
     return () => {
       cancelled = true
-      clearInterval(interval)
+      clearInterval(intervalId)
     }
-  }, [username])
+  }, [])
+
+  const toggleCategory = (category: ProjectCategory) => {
+    const next = new Set(selectedCategories)
+    next.has(category) ? next.delete(category) : next.add(category)
+    setSavedCategories([...next])
+  }
+
+  const filteredRepos = repos?.filter((repo) => {
+    if (selectedCategories.size === 0) return false
+    if (selectedCategories.size === PROJECT_CATEGORIES.length) return true
+    return repo.category && selectedCategories.has(repo.category as ProjectCategory)
+  })
 
   return (
-    <div className="page-container">
-      <div className="content-wrap">
-        <div className="mt-18">
-          {loading && <div>Loading repositories from github.com/{username}...</div>}
-          {error && <div className="error">Error: {error}</div>}
-
-          {!loading && !error && repos && repos.length === 0 && <div>No public repositories found.</div>}
-
-          <div className="cards">
-            {repos && repos.map((r) => <ProjectCard key={r.id} repo={r} />)}
-          </div>
+    <div className="projects-layout">
+      <div className="projects-header">
+        <FilterPanel
+          categories={PROJECT_CATEGORIES}
+          selected={selectedCategories}
+          expanded={filterExpanded}
+          onToggle={() => setFilterExpanded(!filterExpanded)}
+          onChange={toggleCategory}
+        />
+      </div>
+      <div className="projects-content">
+        <div className="projects-scroll">
+          {loading && (
+            <div className="projects-message">Loading repositories from github.com/{GITHUB_USERNAME}...</div>
+          )}
+          {error && <div className="projects-message error">Error: {error}</div>}
+          {!loading && !error && filteredRepos?.length === 0 && (
+            <div className="projects-message">
+              No repositories found{selectedCategories.size > 0 ? ' for selected categories' : ''}.
+            </div>
+          )}
+          <MasonryGrid minGap={36} maxGap={64} minColumnWidth={300}>
+            {filteredRepos?.map((repo) => <ProjectCard key={repo.id} repo={repo} />)}
+          </MasonryGrid>
         </div>
       </div>
     </div>

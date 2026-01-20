@@ -1,66 +1,50 @@
-import portrait from '../assets/portrait.png'
+/**
+ * Profile page displaying personal info and links.
+ */
 
-export default function About() {
+import { LuGlobe, LuMapPin } from 'react-icons/lu'
+import portrait from '../assets/portrait.png'
+import { SOCIAL_LINKS } from '@/data'
+
+const ICON_MAP: Record<string, React.ComponentType> = { LuGlobe, LuMapPin }
+
+export default function Profile() {
   return (
     <div className="profile-page">
       <div className="profile-layout">
-        <aside className="profile-left" aria-label="Profile sidebar">
-          <img
-            className="portrait portrait-img"
-            src={portrait.src}
-            alt="Portrait"
-          />
-
-          <div className="info-list" aria-hidden={false}>
-            <div className="info-item">
-              <img
-                src="https://cdn.simpleicons.org/github/ffffff"
-                alt="GitHub"
-                className="icon-img"
-              />
-              <a href="https://github.com/lu-m-dev" target="_blank" rel="noopener noreferrer">github.com/lu-m-dev</a>
-            </div>
-
-            <div className="info-item">
-              <img
-                src="https://cdn.simpleicons.org/githubactions/ffffff"
-                alt="GitHub Actions"
-                className="icon-img"
-              />
-              <a href="/" target="_self">lu-m-dev.github.io</a>
-            </div>
-
-            <div className="info-item">
-              <img
-                src="https://cdn.simpleicons.org/orcid/ffffff"
-                alt="ORCID"
-                className="icon-img"
-              />
-              <a href="https://orcid.org/0009-0005-9408-5248" target="_blank" rel="noopener noreferrer">orcid.org/0009-0005-9408-5248</a>
-            </div>
-
-            <div className="info-item">
-              <img
-                src="https://cdn.simpleicons.org/googlemaps/ffffff"
-                alt="Google Maps"
-                className="icon-img"
-              />
-              <span>Philadelphia, PA</span>
-            </div>
+        <aside className="profile-sidebar" aria-label="Profile sidebar">
+          <img className="portrait" src={portrait.src} alt="Portrait" />
+          <div className="social-list">
+            {SOCIAL_LINKS.map((link) => {
+              const IconComponent = link.reactIcon ? ICON_MAP[link.reactIcon] : null
+              return (
+                <div key={link.label} className="social-item">
+                  {IconComponent ? (
+                    <IconComponent />
+                  ) : (
+                    <img src={`https://cdn.simpleicons.org/${link.icon}/ffffff`} alt={link.label} className="icon" />
+                  )}
+                  {link.href ? (
+                    <a
+                      href={link.href}
+                      target={link.external ? '_blank' : '_self'}
+                      rel={link.external ? 'noopener noreferrer' : undefined}
+                    >
+                      {link.text}
+                    </a>
+                  ) : (
+                    <span>{link.text}</span>
+                  )}
+                </div>
+              )
+            })}
           </div>
         </aside>
-
-        <main className="profile-right">
+        <main className="profile-main">
           <section className="card card--spaced">
-            <p>
-              I study bioengineering and scientific computing at the University of Pennsylvania.
-            </p>
-            <p>
-              My research is on developing deep learning models for healthcare data.
-            </p>
-            <p>
-              I have worked as a data scientist, focusing on machine learning and data analysis for engineering applications.
-            </p>
+            <p>I study bioengineering and scientific computing at the University of Pennsylvania.</p>
+            <p>My research is on developing deep learning models for healthcare data.</p>
+            <p>I have worked as a data scientist, focusing on machine learning and data analysis for engineering applications.</p>
           </section>
         </main>
       </div>

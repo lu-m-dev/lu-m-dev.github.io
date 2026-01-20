@@ -1,0 +1,40 @@
+/**
+ * Design tokens - colors, typography, spacing, transitions, and effects.
+ */
+
+:root {
+  --c-bg: #030312;
+  --c-text: #e6eef6;
+  --c-muted: #9ca3af;
+  --c-accent: #6ee7ff;
+  --c-glass: rgba(255 255 255 / 0.02);
+  --c-border: rgba(255 255 255 / 0.06);
+  --c-border-hover: rgba(255 255 255 / 0.15);
+
+  --font: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+
+  --r-sm: 6px;
+  --r-md: 8px;
+  --r-lg: 12px;
+  --r-full: 9999px;
+
+  --t-fast: 180ms ease;
+  --t-smooth: 220ms cubic-bezier(0.2, 0.9, 0.2, 1);
+  --t-layout: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  --t-delay: 50ms;
+
+  --h-header: min(120px, 10vh);
+
+  --s-xs: 8px;
+  --s-sm: 12px;
+  --s-md: 18px;
+  --s-lg: 24px;
+  --s-xl: 36px;
+
+  --lift-sm: -6px;
+  --lift-md: -10px;
+  --hover-buffer: 12px;
+
+  --shadow-sm: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.5);
+}

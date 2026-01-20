@@ -1,13 +1,13 @@
-import '../styles/base.css'
-import '../styles/layout.css'
-import '../styles/components.css'
-import '../styles/tech.css'
-import '../styles/profile.css'
-import type { AppProps } from 'next/app'
-import StarfieldProvider from '../src/StarfieldProvider'
-import dynamic from 'next/dynamic'
+/**
+ * Main application wrapper.
+ */
 
-const DetectionArea = dynamic(() => import('../src/DetectionArea'), { ssr: false })
+import '../styles/index.css'
+import type { AppProps } from 'next/app'
+import dynamic from 'next/dynamic'
+import { StarfieldProvider } from '@/components'
+
+const DetectionArea = dynamic(() => import('@/components/DetectionArea'), { ssr: false })
 
 export default function App({ Component, pageProps }: AppProps) {
   return (

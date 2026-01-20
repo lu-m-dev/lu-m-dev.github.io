@@ -1,70 +1,39 @@
-import { useState } from 'react'
-import { type Tech, categories } from '../src/TechData'
+/**
+ * Technologies page displaying skills organized by category.
+ */
+
+import { LuCode, LuBrainCircuit, LuCog, LuAtom, LuFileText, LuLayers } from 'react-icons/lu'
+import { TechItem } from '@/components'
+import { TECH_CATEGORIES } from '@/data'
+
+const ICON_MAP: Record<string, React.ComponentType> = {
+  LuCode, LuBrainCircuit, LuCog, LuAtom, LuFileText, LuLayers,
+}
 
 export default function TechPage() {
   return (
-    <div className="page-container">
-      <div className="content-wrap">
-        {categories.map((cat) => (
-          <section key={cat.title}>
-            <h3 className="mt-18">{cat.title}</h3>
-            <div className={`logo-grid ${cat.className ?? ''} mt-12`}>
-              {cat.items.map((t) => (
-                <TechItem key={t.slug} tech={t} />
-              ))}
-            </div>
-            <div className="category-break" />
-          </section>
-        ))}
+    <div className="tech-layout">
+      <div className="tech-content">
+        <div className="tech-scroll">
+          {TECH_CATEGORIES.map((category) => {
+            const IconComponent = category.icon ? ICON_MAP[category.icon] : null
+            return (
+              <section key={category.title}>
+                <h3 className="section-title">
+                  {IconComponent && <IconComponent />}
+                  {category.title}
+                </h3>
+                <div className="tech-grid">
+                  {category.items.map((tech) => (
+                    <TechItem key={tech.slug} tech={tech} />
+                  ))}
+                </div>
+                <div className="section-divider" />
+              </section>
+            )
+          })}
+        </div>
       </div>
     </div>
-  )
-}
-
-function TechItem({ tech }: { tech: Tech }) {
-  const [showImage, setShowImage] = useState<boolean>(Boolean(tech.slug))
-  const [bubbleBelow, setBubbleBelow] = useState<boolean>(false)
-
-  const logoUrl = tech.slug ? `https://cdn.simpleicons.org/${tech.slug}` : ''
-  const info = { url: tech.url ?? '#', desc: tech.desc ?? '' }
-
-  const updateBubblePosition = (el: HTMLElement | null) => {
-    if (!el) return
-    const rect = el.getBoundingClientRect()
-    const threshold = 120
-    setBubbleBelow(rect.top < threshold)
-  }
-
-  return (
-    <a
-      className="tech-item"
-      href={info.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      tabIndex={0}
-      aria-label={`${tech.name}: ${info.desc}`}
-      onMouseEnter={(e) => updateBubblePosition(e.currentTarget as HTMLElement)}
-      onFocus={(e) => updateBubblePosition(e.currentTarget as HTMLElement)}
-      onMouseLeave={() => setBubbleBelow(false)}
-      onBlur={() => setBubbleBelow(false)}
-    >
-      <div className="logo">
-        {showImage && logoUrl ? (
-          <img
-            src={logoUrl}
-            alt={`${tech.name} logo`}
-            onError={() => setShowImage(false)}
-          />
-        ) : (
-          <div className="logo-fallback" aria-hidden={false}>
-            {tech.slug}
-          </div>
-        )}
-      </div>
-      <div className={`tech-label ${bubbleBelow ? 'bubble-bottom' : ''}`}>
-        <div className="bubble-name">{tech.name}</div>
-        {info.desc ? <div className="bubble-desc">{info.desc}</div> : null}
-      </div>
-    </a>
   )
 }
