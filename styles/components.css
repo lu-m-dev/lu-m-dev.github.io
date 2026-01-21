@@ -9,7 +9,7 @@
   border: 1px solid var(--c-border);
   position: relative;
   overflow: visible;
-  transition: transform var(--t-fast) var(--t-delay);
+  transition: transform var(--t-fast);
 }
 .card::before {
   content: '';
@@ -17,7 +17,7 @@
   inset: calc(var(--hover-buffer) * -1);
   z-index: -1;
 }
-.card:hover { transform: translateY(var(--lift-sm)); transition-delay: 0ms; }
+.card:hover { transform: translateY(var(--lift)); }
 .card--spaced { margin-top: var(--s-md); }
 
 .section-title { display: flex; align-items: center; gap: var(--s-sm); margin-top: var(--s-md); }
@@ -26,7 +26,7 @@
 
 .tag-chip {
   display: inline-block;
-  padding: var(--s-2xs) var(--s-xs);
+  padding: var(--s-xs) var(--s-xs);
   border-radius: var(--r-full);
   background: var(--c-glass);
   color: var(--c-muted);
@@ -36,7 +36,7 @@
 
 .filter-chip {
   position: relative;
-  padding: var(--s-sm) var(--s-lg) var(--s-sm) calc(var(--s-sm) + var(--s-lg) + var(--size-check));
+  padding: var(--s-sm) var(--s-md) var(--s-sm) calc(var(--s-sm) + var(--s-md) + var(--size-check));
   border-radius: var(--r-md);
   background: transparent;
   color: var(--c-muted);
@@ -44,7 +44,7 @@
   font-weight: 500;
   border: 1px solid var(--c-border);
   cursor: pointer;
-  transition: color var(--t-fast) var(--t-delay), border-color var(--t-fast) var(--t-delay), background var(--t-fast) var(--t-delay), transform var(--t-fast) var(--t-delay);
+  transition: color var(--t-fast), border-color var(--t-fast), background var(--t-fast), transform var(--t-fast);
   text-transform: capitalize;
 }
 .filter-chip::before {
@@ -55,27 +55,27 @@
   transform: translateY(-50%);
   width: var(--size-check);
   height: var(--size-check);
-  border: 2px solid var(--c-check);
+  border: 2px solid var(--c-border);
   border-radius: var(--r-sm);
   transition: border-color var(--t-fast), background var(--t-fast);
 }
 .filter-chip::after {
   content: '';
   position: absolute;
-  left: calc(var(--s-sm) + var(--s-2xs));
+  left: calc(var(--s-sm) + var(--s-xs) / 2);
   top: 50%;
   transform: translateY(-50%) scale(0);
-  width: var(--size-check-inner);
-  height: var(--size-check-inner);
+  width: calc(var(--size-check) - var(--s-xs));
+  height: calc(var(--size-check) - var(--s-xs));
   background: var(--c-accent);
-  border-radius: var(--r-xs);
+  border-radius: var(--r-sm);
   transition: transform var(--t-fast);
 }
-.filter-chip:hover { color: var(--c-text); border-color: var(--c-border-hover); background: var(--c-glass); transform: scale(0.95); transition-delay: 0ms; }
+.filter-chip:hover { color: var(--c-text); border-color: var(--c-text); background: var(--c-glass); transform: scale(0.95); }
 .filter-chip:active { transform: scale(0.9); }
-.filter-chip:hover::before { border-color: var(--c-check-hover); }
-.filter-chip.active { color: var(--c-accent); border-color: var(--c-accent); background: var(--c-accent-dim); }
-.filter-chip.active::before { border-color: var(--c-accent); background: var(--c-accent-soft); }
+.filter-chip:hover::before { border-color: var(--c-text); }
+.filter-chip.active { color: var(--c-accent); border-color: var(--c-accent); background: rgb(from var(--c-accent) r g b / 0.08); }
+.filter-chip.active::before { border-color: var(--c-accent); background: rgb(from var(--c-accent) r g b / 0.15); }
 .filter-chip.active::after { transform: translateY(-50%) scale(1); }
 
 
