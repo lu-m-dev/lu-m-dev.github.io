@@ -22,7 +22,7 @@
   height: 100%;
   overflow-y: scroll;
   overflow-x: hidden;
-  padding: var(--s-lg) var(--s-xl) var(--s-xl);
+  padding: var(--s-lg) var(--s-2xl) var(--s-xl);
   -webkit-mask-image: linear-gradient(to bottom, transparent 0px, black var(--s-lg), black calc(100% - var(--s-lg)), transparent 100%);
   mask-image: linear-gradient(to bottom, transparent 0px, black var(--s-lg), black calc(100% - var(--s-lg)), transparent 100%);
   scrollbar-width: none;
@@ -54,7 +54,7 @@
   font-size: 1.6rem;
   font-weight: 700;
   color: var(--c-text);
-  transition: transform var(--t-smooth) var(--t-delay), color var(--t-fast);
+  transition: transform var(--t-fast) var(--t-delay), color var(--t-fast);
   transform-origin: center;
   padding-bottom: var(--hover-buffer);
   margin-bottom: calc(var(--hover-buffer) * -1);

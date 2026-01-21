@@ -17,33 +17,31 @@ export default function FilterPanel({ categories, selected, expanded, onToggle, 
   return (
     <div className={cn('filter-panel', expanded && 'expanded')}>
       <div className="filter-toggle" onClick={onToggle}>
-        <div className="filter-line" />
-        <div className="filter-label-text filter-toggle-text filter-toggle-text--top">
+        <span className="filter-label-text filter-label--expand">
           EXPAND FILTERS
           <span className="filter-arrow">▼</span>
-        </div>
-      </div>
-      <div className="filter-body">
-        <div className="filter-body-inner">
-          <div className="filter-title">Showing categories:</div>
-          <div className="filter-chips">
-            {categories.map((category) => (
-              <button
-                key={category}
-                className={cn('filter-chip', selected.has(category) && 'active')}
-                onClick={() => onChange(category)}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-      <div className="filter-toggle filter-toggle--bottom" onClick={onToggle}>
-        <div className="filter-line" />
-        <div className="filter-label-text">
+        </span>
+        <span className="filter-label-text filter-label--collapse">
           COLLAPSE FILTERS
           <span className="filter-arrow">▲</span>
+        </span>
+      </div>
+      <div className="filter-box">
+        <div className="filter-body">
+          <div className="filter-body-inner">
+            <div className="filter-title">Showing categories:</div>
+            <div className="filter-chips">
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  className={cn('filter-chip', selected.has(category) && 'active')}
+                  onClick={() => onChange(category)}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>

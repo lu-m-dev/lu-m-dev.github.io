@@ -10,26 +10,44 @@
   --c-glass: rgba(255 255 255 / 0.02);
   --c-border: rgba(255 255 255 / 0.06);
   --c-border-hover: rgba(255 255 255 / 0.15);
+  --c-check: rgba(255 255 255 / 0.2);
+  --c-check-hover: rgba(255 255 255 / 0.4);
+  --c-accent-dim: rgba(110, 231, 255, 0.06);
+  --c-accent-soft: rgba(110, 231, 255, 0.15);
 
   --font: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 
-  --r-sm: 6px;
+  --r-xs: 2px;
+  --r-sm: 4px;
   --r-md: 8px;
   --r-lg: 12px;
   --r-full: 9999px;
 
-  --t-fast: 180ms ease;
-  --t-smooth: 220ms cubic-bezier(0.2, 0.9, 0.2, 1);
-  --t-layout: 400ms cubic-bezier(0.4, 0, 0.2, 1);
-  --t-delay: 50ms;
+  --t-fast: 200ms ease;
+  --t-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  --t-slower: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+  --t-delay: 80ms;
 
   --h-header: min(120px, 10vh);
+  --h-btn: 32px;
+  --h-btn-lg: 40px;
 
+  --s-2xs: 4px;
   --s-xs: 8px;
   --s-sm: 12px;
-  --s-md: 18px;
-  --s-lg: 24px;
+  --s-md: 16px;
+  --s-lg: 20px;
   --s-xl: 36px;
+  --s-2xl: 64px;
+
+  --size-icon: 20px;
+  --size-check: 18px;
+  --size-check-inner: 10px;
+  --size-portrait: 220px;
+  --size-sidebar: 320px;
+  --size-card: 360px;
+  --size-tech: 92px;
+  --size-tech-logo: 56px;
 
   --lift-sm: -6px;
   --lift-md: -10px;
